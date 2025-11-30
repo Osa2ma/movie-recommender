@@ -163,13 +163,6 @@ The recommendation algorithm uses a hybrid approach:
 
 Final recommendations are sorted by combined score, excluding the seed movies themselves.
 
-## 🔒 Security Note
-
-**Never commit your TMDB token!** 
-
-- The `.env` file is in `.gitignore`
-- Use `.env.example` as a template
-- Set `TMDB_TOKEN` as an environment variable in production
 
 ## 📊 Dataset
 
@@ -201,34 +194,9 @@ jupyter notebook notebooks/experiments.ipynb
 - `data/`: Raw datasets
 - `models/`: Generated artifacts (cached embeddings)
 
-## 📈 Future Enhancements
-
-- [ ] Add user ratings for personalization
-- [ ] Implement collaborative filtering
-- [ ] Add advanced filters (year, rating, language)
-- [ ] Deploy to Streamlit Cloud
-- [ ] Add recommendation explanations
-- [ ] Support for more than 2 seed movies
-
-## 🤝 Contributing
-
-Contributions welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- TMDB for movie data and API
-- Sentence Transformers team for amazing models
-- Facebook Research for FAISS
-- Streamlit team for the fantastic framework
 
 ## 📧 Contact
 

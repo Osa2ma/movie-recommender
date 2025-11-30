@@ -155,7 +155,7 @@ def main():
             with st.spinner('🔍 Finding perfect movies for you...'):
                 recs = recommender.recommend(movie_id1, movie_id2, top_n=num_recommendations)
             
-            st.success(f"✨ Found {len(recs)} great recommendations!")
+            st.success(f"Found {len(recs)} great recommendations!")
             st.subheader("🍿 Recommended Movies")
             
             # Display in rows of 3

@@ -109,7 +109,7 @@ movie-recommender/
 4. **Set up environment variables**
    ```bash
    # Copy the example file
-   cp .env.example .env
+   cp .env
    
    # Edit .env and add your TMDB token
    # TMDB_TOKEN=your_actual_token_here
@@ -180,12 +180,6 @@ Uses the TMDB 5000 Movie Dataset containing:
 - **[TMDB API](https://www.themoviedb.org/documentation/api)**: Movie posters and metadata
 
 ## 🧪 Development
-
-### Running Experiments
-
-```bash
-jupyter notebook notebooks/experiments.ipynb
-```
 
 ### Project Organization
 

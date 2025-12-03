@@ -61,8 +61,6 @@ movie-recommender/
 │   └── keywords.csv          # Movie keywords
 ├── models/
 │   └── movie_embeddings.npy  # Cached embeddings (generated)
-├── notebooks/
-│   └── experiments.ipynb     # Evaluation and experiments
 ├── utils/
 │   ├── __init__.py
 │   ├── data_loader.py        # Data loading and preprocessing

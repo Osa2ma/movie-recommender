@@ -21,16 +21,15 @@ class MovieRecommender:
         self.emb_manager = embedding_manager
         self.movies_df = movies_df
         self.id_to_index = embedding_manager.id_to_index
-        self.index = embedding_manager.index  # FAISS index for similarity search
     
     def recommend(self, movie_id1: int, movie_id2: int, top_n: int = 6) -> pd.DataFrame:
         """
         Generate movie recommendations based on two seed movies.
         
-        Uses Intersection Priority approach (tested score: 0.4121):
+        Uses a hybrid approach:
         1. Semantic similarity via embeddings (finds movies similar to each seed)
         2. Intersection scoring (prefers movies similar to both seeds)
-        3. Boost consensus recommendations by 1.5x
+        3. Genre-aware reranking (bonus for matching genres)
         
         Args:
             movie_id1: First seed movie ID
@@ -51,33 +50,44 @@ class MovieRecommender:
         emb1 = self.emb_manager.embeddings[idx1]
         emb2 = self.emb_manager.embeddings[idx2]
         
-        # Search for similar movies (larger pool for better results)
-        scores1, idxs1 = self.index.search(emb1.reshape(1, -1), 50)
-        scores2, idxs2 = self.index.search(emb2.reshape(1, -1), 50)
-
-        set1 = set(idxs1[0])
-        set2 = set(idxs2[0])
-        intersection = set1 & set2
-        union_only = (set1 | set2) - intersection
-
-        # Scoring function: prioritize movies recommended by both inputs
-        def scoring(i):
-            s1 = scores1[0][list(idxs1[0]).index(i)] if i in set1 else 0
-            s2 = scores2[0][list(idxs2[0]).index(i)] if i in set2 else 0
-            
-            # Boost intersection items (consensus recommendations)
-            if i in intersection:
-                return (s1 + s2) * 1.5
-            else:
-                return (s1 + s2)
-
-        # Rank all candidates
-        ranked = sorted(intersection | union_only, key=scoring, reverse=True)
+        # Search for similar movies separately
+        scores1, idxs1 = self.emb_manager.search_similar(emb1, k=40)
+        scores2, idxs2 = self.emb_manager.search_similar(emb2, k=40)
         
-        # Remove seed movies from results
+        # Create candidate pool (union of both searches)
+        set1 = set(idxs1)
+        set2 = set(idxs2)
+        combined = list(set1 | set2)
+        
+        # Hybrid scoring: use minimum of two similarities (encourages intersection)
+        def blended_score(i):
+            s1 = scores1[list(idxs1).index(i)] if i in set1 else 0
+            s2 = scores2[list(idxs2).index(i)] if i in set2 else 0
+            return min(s1, s2)
+        
+        # Rank candidates
+        ranked = sorted(combined, key=blended_score, reverse=True)
+        
+        # Remove seed movies
         ranked = [i for i in ranked if i not in (idx1, idx2)]
-
-        # Get top N recommendations
+        
+        # Get top candidates
         recs = self.movies_df.iloc[ranked[:top_n]].copy()
-
-        return recs[['id', 'title', 'overview', 'vote_average', 'genres_str']]
+        
+        # Genre-aware reranking
+        seed_genres = self._get_combined_genres(idx1, idx2)
+        recs["genre_score"] = recs.apply(lambda row: self._genre_bonus(row, seed_genres), axis=1)
+        
+        return recs[['id', 'title', 'overview', 'vote_average', 'genres_str', 'genre_score']]
+    
+    def _get_combined_genres(self, idx1: int, idx2: int) -> Set[str]:
+        """Get combined genres from two movies."""
+        genres1 = str(self.movies_df.loc[idx1, "genres_str"])
+        genres2 = str(self.movies_df.loc[idx2, "genres_str"])
+        return set((genres1 + " " + genres2).split())
+    
+    def _genre_bonus(self, row: pd.Series, seed_genres: Set[str]) -> float:
+        """Calculate genre overlap bonus."""
+        movie_genres = set(str(row["genres_str"]).split())
+        overlap = len(movie_genres & seed_genres)
+        return overlap / (len(seed_genres) + 1e-9)

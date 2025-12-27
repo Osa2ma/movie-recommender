@@ -128,7 +128,7 @@ movie-recommender/
    
    Navigate to `http://localhost:8501`
 
-## 💡 How It Works
+## How It Works
 
 ### 1. Embedding Generation
 

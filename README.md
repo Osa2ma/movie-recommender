@@ -1,4 +1,4 @@
-# 🎬 Movie Recommender
+# Movie Recommender
 
 A semantic hybrid movie recommendation system that finds films combining the themes and styles of two movies you love. Built with Sentence Transformers, FAISS, and Streamlit.
 
@@ -6,7 +6,7 @@ A semantic hybrid movie recommendation system that finds films combining the the
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)
 ![License](https://img.shields.io/badge/License-MIT-green.svg)
 
-## 🌟 Features
+## Features
 
 - **Semantic Understanding**: Uses state-of-the-art sentence transformers to understand movie plots and themes
 - **Fast Search**: FAISS-powered vector similarity search for instant recommendations
@@ -14,7 +14,7 @@ A semantic hybrid movie recommendation system that finds films combining the the
 - **Beautiful UI**: Modern Streamlit interface with movie posters from TMDB
 - **Customizable**: Adjust number of recommendations on the fly
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌─────────────────┐
@@ -50,7 +50,7 @@ A semantic hybrid movie recommendation system that finds films combining the the
 └─────────────────────────────────┘
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 movie-recommender/
@@ -73,7 +73,7 @@ movie-recommender/
 └── requirements.txt
 ```
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 
@@ -162,14 +162,14 @@ The recommendation algorithm uses a hybrid approach:
 Final recommendations are sorted by combined score, excluding the seed movies themselves.
 
 
-## 📊 Dataset
+## Dataset
 
 Uses the TMDB 5000 Movie Dataset containing:
 - ~8,000 movies (filtered to >1000 votes)
 - Metadata: title, overview, genres, vote average
 - Keywords for enhanced semantic understanding
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **[Streamlit](https://streamlit.io/)**: Web framework for Python
 - **[Sentence Transformers](https://www.sbert.net/)**: State-of-the-art text embeddings
@@ -177,7 +177,7 @@ Uses the TMDB 5000 Movie Dataset containing:
 - **[Pandas](https://pandas.pydata.org/)**: Data manipulation
 - **[TMDB API](https://www.themoviedb.org/documentation/api)**: Movie posters and metadata
 
-## 🧪 Development
+## Development
 
 ### Project Organization
 
@@ -186,11 +186,11 @@ Uses the TMDB 5000 Movie Dataset containing:
 - `data/`: Raw datasets
 - `models/`: Generated artifacts (cached embeddings)
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📧 Contact
+## Contact
 
 Questions? Open an issue or reach out!
 
